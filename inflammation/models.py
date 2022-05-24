@@ -32,3 +32,28 @@ def daily_min(data):
     """Calculate the daily min of a 2D inflammation data array."""
     return np.min(data, axis=0)
 
+
+def patient_normalise(data):
+    """Normalise patient data from a 2D inflammation data array."""
+    max = np.max(data, axis=0)
+    return data / max[:, np.newaxis]
+
+
+def attach_names(data, names):
+    """Attach names to the patient dataset"""
+    data = np.array(data)
+    names = np.array(names)
+
+    named_data = {}
+    
+    for name, datum in zip(names, data):
+        named_data[name] = datum
+    """
+    output = []
+
+    for i in range(len(data)):
+        output.append({'name': names[i],
+                       'data': data[i]})
+    """
+    return named_data
+
