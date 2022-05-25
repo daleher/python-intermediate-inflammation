@@ -38,9 +38,9 @@ def patient_normalise(data):
     max = np.max(data, axis=0)
     return data / max[:, np.newaxis]
 
-
+"""
 def attach_names(data, names):
-    """Attach names to the patient dataset"""
+    # Attach names to the patient dataset
     data = np.array(data)
     names = np.array(names)
 
@@ -48,12 +48,45 @@ def attach_names(data, names):
     
     for name, datum in zip(names, data):
         named_data[name] = datum
-    """
     output = []
 
     for i in range(len(data)):
         output.append({'name': names[i],
                        'data': data[i]})
-    """
     return named_data
 
+"""
+
+class Observation:
+    def __init__(self, day, value):
+        self.day = day
+        self.value = value
+
+    def __str__(self):
+        return str(self.value)
+
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
+class Patient(Person):
+    """A patient in an inflammation study."""
+    def __init__(self, name, observations=None):
+        super().__init__(name)
+        self.observations = observations or []
+
+    def add_observation(self, value, day=None):
+        if day is None:
+            try:
+                day = self.observations[-1].day + 1
+
+            except IndexError:
+                day = 0
+
+        new_observation = Observation(day, value)
+
+        self.observations.append(new_observation)
+        return new_observation
